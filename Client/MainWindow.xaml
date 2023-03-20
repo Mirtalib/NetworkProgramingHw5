@@ -20,22 +20,91 @@
                     />
 
         <Grid Grid.Row="1">
-            <Grid.RowDefinitions>
-                <RowDefinition></RowDefinition>
-                <RowDefinition></RowDefinition>
-                <RowDefinition></RowDefinition>
-                <RowDefinition></RowDefinition>
-                <RowDefinition></RowDefinition>
-                <RowDefinition></RowDefinition>
-            </Grid.RowDefinitions>
-            <TextBox Name="txtboxId" Margin="100,10,100,10"></TextBox>
-            <TextBox Name="txtboxMake" Grid.Row="1" Margin="100,10,100,10"></TextBox>
-            <TextBox Name="txtboxModel" Grid.Row="2"  Margin="100,10,100,10"></TextBox>
-            <TextBox Name="txtboxYear" Grid.Row="3"  Margin="100,10,100,10"></TextBox>
-            <TextBox Name="txtboxVinCod" Grid.Row="4"  Margin="100,10,100,10"></TextBox>
-            <TextBox Name="txtboxColor" Grid.Row="5"  Margin="100,10,100,10"></TextBox>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition Width="2*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0"
+                           FontSize="25"
+                           Text="Car Info"
+                           Foreground="#FF8DFF00"
+                           Margin="9,0,0,0" ></TextBlock>
+                <TextBlock Grid.Row="1"
+                           FontSize="20"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Left"
+                           Text="Id" 
+                           Foreground="#FF8DFF00"
+                           Margin="9,0,0,0" ></TextBlock>
+                <TextBox Name="txtboxId"
+                         Grid.Row="1"
+                         Margin="50,10,10,10"></TextBox>
+                <TextBlock Grid.Row="2" FontSize="14"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Left"
+                           Text="Make"
+                           Foreground="#FF8DFF00"
+                           Margin="9,0,0,0" ></TextBlock>
+                <TextBox Name="txtboxMake"
+                         Grid.Row="2"
+                         Margin="50,10,10,10"></TextBox>
+                <TextBlock Grid.Row="3"
+                           FontSize="13"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Left"
+                           Text="Model"
+                           Foreground="#FF8DFF00"
+                           Margin="9,0,0,0" ></TextBlock>
+                <TextBox Name="txtboxModel"
+                         Grid.Row="3"
+                         Margin="50,10,10,10"></TextBox>
+                <TextBlock Grid.Row="4"
+                           FontSize="16"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Left"
+                           Text="Year"
+                           Foreground="#FF8DFF00"
+                           Margin="9,0,0,0" ></TextBlock>
+                <TextBox Name="txtboxYear"
+                         Grid.Row="4"
+                         Margin="50,10,10,10"></TextBox>
+                <TextBlock Grid.Row="5"
+                           FontSize="15"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Left"
+                           Text="VIN"
+                           Foreground="#FF8DFF00"
+                           Margin="9,0,0,0" ></TextBlock>
+                <TextBox Name="txtboxVinCod"
+                         Grid.Row="5"
+                         Margin="50,10,10,10"></TextBox>
+                <TextBlock Grid.Row="6"
+                           FontSize="14"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Left"
+                           Text="Color"
+                           Foreground="#FF8DFF00"
+                           Margin="9,0,0,0" ></TextBlock>
+                <TextBox Name="txtboxColor"
+                         Grid.Row="6"
+                         Margin="50,10,10,10"></TextBox>
+            </Grid>
+            <WrapPanel Grid.Column="1" Name="CarListWrapPanel"></WrapPanel>
+
+
         </Grid>
-        
+
         <Button Grid.Row="2"
                 Width="200"
                 Height="40" 

@@ -9,16 +9,20 @@ List<Car> cars = new List<Car>();
 
 var ip = IPAddress.Parse("127.0.0.1");
 
-var port = 27001;
+var port = 12;
 
 var listener = new TcpListener(ip, port);
 
-listener.Start(10);
+listener.Start();
 
 
 while (true)
 {
+    Console.WriteLine("Start listinig");
     var client = listener.AcceptTcpClient();
+    Console.WriteLine("concent");
+
+
     var clientStream = client.GetStream();
 
 

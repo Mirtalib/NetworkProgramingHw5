@@ -1,4 +1,5 @@
 ﻿using Client.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -21,28 +22,23 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Client
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         TcpClient client;
-        FileStream fileStream;
-
+        Car car;
         public MainWindow()
         {
             InitializeComponent();
 
-            var ipString = IPAddress.Parse("127.0.0.1");
-            var port = 27001;
-            IPEndPoint ep = new(ipString, port);
-            // fileStream = new FileStream("data.json", FileMode.Create, FileAccess.Write);
-            client = new TcpClient(ep);
+            //var ipString = IPAddress.Parse("127.0.0.1");
+            //var port = 12;
+            //IPEndPoint ep = new(ipString, port);
+            client = new TcpClient("127.0.0.1" ,12);
+            
+            var enumType = Enum.GetNames(typeof(HttpMethods));
 
-            cmboxCommandName.Items.Add(HttpMethods.GET.ToString());
-            cmboxCommandName.Items.Add(HttpMethods.POST.ToString());
-            cmboxCommandName.Items.Add(HttpMethods.PUT.ToString());
-            cmboxCommandName.Items.Add(HttpMethods.DELETE.ToString());
+            foreach (var item in enumType)
+                cmboxCommandName.Items.Add(item);
         }
         private void cmboxCommandName_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -52,21 +48,49 @@ namespace Client
                 txtboxModel.Visibility = Visibility.Collapsed;
                 txtboxVinCod.Visibility = Visibility.Collapsed;
                 txtboxYear.Visibility = Visibility.Collapsed;
-            }
+                txtboxColor.Visibility = Visibility.Collapsed;
 
+
+            }
+            else if (cmboxCommandName.SelectedIndex == 2)
+            {
+
+                txtboxMake.Visibility = Visibility.Visible;
+                txtboxModel.Visibility = Visibility.Visible;
+                txtboxVinCod.Visibility = Visibility.Visible;
+                txtboxYear.Visibility = Visibility.Visible;
+                txtboxColor.Visibility = Visibility.Visible;
+
+
+            }
+            else if (cmboxCommandName.SelectedIndex == 3)
+            {
+                txtboxMake.Visibility = Visibility.Collapsed;
+                txtboxModel.Visibility = Visibility.Collapsed;
+                txtboxVinCod.Visibility = Visibility.Collapsed;
+                txtboxYear.Visibility = Visibility.Collapsed;
+                txtboxColor.Visibility = Visibility.Collapsed;
+
+            }
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            Car car = new();
+
+            Command command = new()
+            {
+                Car = car,
+                Method = (HttpMethods)cmboxCommandName.SelectedIndex
+            };
+
+            // var fileStream = new FileStream("data.json", FileMode.Open, FileAccess.Write);
+            var jsonString = JsonConvert.SerializeObject(command, Newtonsoft.Json.Formatting.Indented);
+            File.WriteAllText("data.json", jsonString);
+           
+
+
+
             var serverStream = client.GetStream();
-            fileStream = new FileStream("data.json", FileMode.Open, FileAccess.Write);
-
-            
-
-            
-
-            
             //fileStream.Flush();
             //serverStream.CopyTo(fileStream);
 
