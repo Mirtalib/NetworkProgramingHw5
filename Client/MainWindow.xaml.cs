@@ -1,4 +1,5 @@
 ﻿using Client.Models;
+using Client.User_Controls;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -7,7 +8,9 @@ using System.IO.Pipes;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Runtime.ConstrainedExecution;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -39,6 +42,14 @@ namespace Client
 
             foreach (var item in enumType)
                 cmboxCommandName.Items.Add(item);
+
+            for (int i = 0; i < 100; i++)
+            {
+                UC_CarInfo carInfo = new();
+                CarListWrapPanel.Children.Add(carInfo);
+            }
+
+
         }
         private void cmboxCommandName_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -49,19 +60,22 @@ namespace Client
                 txtboxVinCod.Visibility = Visibility.Collapsed;
                 txtboxYear.Visibility = Visibility.Collapsed;
                 txtboxColor.Visibility = Visibility.Collapsed;
-
-
             }
-            else if (cmboxCommandName.SelectedIndex == 2)
+            else if (cmboxCommandName.SelectedIndex == 1)
             {
-
                 txtboxMake.Visibility = Visibility.Visible;
                 txtboxModel.Visibility = Visibility.Visible;
                 txtboxVinCod.Visibility = Visibility.Visible;
                 txtboxYear.Visibility = Visibility.Visible;
                 txtboxColor.Visibility = Visibility.Visible;
-
-
+            }
+            else if (cmboxCommandName.SelectedIndex == 2)
+            {
+                txtboxMake.Visibility = Visibility.Visible;
+                txtboxModel.Visibility = Visibility.Visible;
+                txtboxVinCod.Visibility = Visibility.Visible;
+                txtboxYear.Visibility = Visibility.Visible;
+                txtboxColor.Visibility = Visibility.Visible;
             }
             else if (cmboxCommandName.SelectedIndex == 3)
             {
@@ -70,29 +84,78 @@ namespace Client
                 txtboxVinCod.Visibility = Visibility.Collapsed;
                 txtboxYear.Visibility = Visibility.Collapsed;
                 txtboxColor.Visibility = Visibility.Collapsed;
-
             }
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private async void Button_Click(object sender, RoutedEventArgs e)
         {
 
-            Command command = new()
+
+            if (txtboxMake.Text == null || txtboxModel.Text == null || txtboxVinCod.Text == null 
+                || txtboxYear.Text == null || txtboxColor.Text == null)
             {
-                Car = car,
-                Method = (HttpMethods)cmboxCommandName.SelectedIndex
-            };
-
-            // var fileStream = new FileStream("data.json", FileMode.Open, FileAccess.Write);
-            var jsonString = JsonConvert.SerializeObject(command, Newtonsoft.Json.Formatting.Indented);
-            File.WriteAllText("data.json", jsonString);
-           
-
+                MessageBox.Show("Wrong Data");
+                return;
+            }
 
 
             var serverStream = client.GetStream();
-            //fileStream.Flush();
-            //serverStream.CopyTo(fileStream);
+
+            var binaryRead = new BinaryReader(serverStream);
+            var binaryWrite = new BinaryWriter(serverStream);
+
+
+
+            if (cmboxCommandName.SelectedIndex == 0)
+            {
+                try
+                {
+                    car = new()
+                    {
+                        Id = Convert.ToInt32(txtboxId.Text),
+                        Make = txtboxMake.Text,
+                        Model = txtboxModel.Text,
+                        Color = txtboxColor.Text,
+                        VIN = txtboxVinCod.Text,
+                        Year = Convert.ToInt32(txtboxYear.Text),
+                    };
+
+                    Command commandWrite = new()
+                    {
+                        Car = car,
+                        Method = (HttpMethods)cmboxCommandName.SelectedIndex
+                    };
+                    var jsonStr = System.Text.Json.JsonSerializer.Serialize(commandWrite);
+                    binaryWrite.Write(jsonStr);
+                    await Task.Delay(100);
+                    var response = binaryRead.ReadString();
+                    var commandRead = System.Text.Json.JsonSerializer.Deserialize<Command>(response);
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                    return;
+                }
+                
+
+            }
+            else if (cmboxCommandName.SelectedIndex == 1)
+            {
+
+            }
+            else if (cmboxCommandName.SelectedIndex == 2)
+            {
+
+            }
+            else if (cmboxCommandName.SelectedIndex == 3)
+            {
+
+            }
+ 
+
+
+
 
 
         }

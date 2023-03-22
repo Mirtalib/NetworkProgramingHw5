@@ -100,7 +100,15 @@
                          Grid.Row="6"
                          Margin="50,10,10,10"></TextBox>
             </Grid>
-            <WrapPanel Grid.Column="1" Name="CarListWrapPanel"></WrapPanel>
+
+            <Grid
+                  Grid.Column="1">
+                <ScrollViewer 
+                    x:Name="MyScrollViewer" 
+                    Margin="20 0 0 20">
+                    <WrapPanel Name="CarListWrapPanel"></WrapPanel>
+                </ScrollViewer>
+            </Grid>
 
 
         </Grid>

@@ -1,9 +1,9 @@
-﻿using Server.Models;
+﻿using Newtonsoft.Json;
+using Server.Models;
+using System.IO;
 using System.Net;
 using System.Net.Sockets;
-
-
-
+using System.Text.Json;
 
 List<Car> cars = new List<Car>(); 
 
@@ -14,22 +14,63 @@ var port = 12;
 var listener = new TcpListener(ip, port);
 
 listener.Start();
-
+string filename = "C:\\Users\\Asus\\source\\repos\\NetworkProgramingHw5\\Server\\Data\\appData.json";
 
 while (true)
 {
+    var stringData = File.ReadAllText(filename);
+    cars = JsonConvert.DeserializeObject<List<Car>>(stringData)!;
     Console.WriteLine("Start listinig");
     var client = listener.AcceptTcpClient();
-    Console.WriteLine("concent");
+    Console.WriteLine("connect");
+    
+    Task.Run(() =>
+    {
 
+        var clientStream = client.GetStream();
+        var binaryWrite = new BinaryWriter(clientStream);
+        var binaryRead = new BinaryReader(clientStream);
 
-    var clientStream = client.GetStream();
+        while (true)
+        {
+            var strRead = binaryRead.ReadString();
 
+            var command = System.Text.Json.JsonSerializer.Deserialize<Command>(strRead);
 
+            if (command is null)
+                return;
 
+            switch (command.Method)
+            {
+                case HttpMethods.GET:
+                    {
+                        var jsonStr = System.Text.Json.JsonSerializer.Serialize(GetById(command.Car.Id));
+                        binaryWrite.Write(jsonStr);
+                        binaryWrite.Flush();
+                        break;
+                    }
+                case HttpMethods.POST:
+                    {
+                        var jsonStr = System.Text.Json.JsonSerializer.Serialize(GetAll());
+                        binaryWrite.Write(jsonStr);
+                        binaryWrite.Flush();
+                        break;
+                    }
+                case HttpMethods.PUT:
+                    binaryWrite.Write(Update(command.Car));
+                    binaryWrite.Flush();
+                    break;
+                case HttpMethods.DELETE:
+                    binaryWrite.Write(Delete(command.Car.Id));
+                    binaryWrite.Flush();
+                    break;
+                default:
+                    break;
+            }
 
+        }
+    }).Start();
 }
-
 
 
 Car? GetById(int id)
@@ -41,34 +82,31 @@ Car? GetById(int id)
             return car;
         }
     }
-    return null;
+    return new Car();
 }
 
 List<Car>? GetAll()
 {
     return cars;
 }
+
 bool Add(Car car)
 {
-    if (car.VIN != null 
-        && car.Make != null
-        && car.Model != null
-        && car.Year != null
-        && car.Color != null)
-    {
-        cars.Add(car);
-        return true;
-    }
-    else
-    {
-        return false;
-    }
-
-
+    cars.Add(car);
+    return true;
 }
 bool Update(Car car)
 {
-    return true;
+    foreach (var item in cars)
+    {
+        if (item.Id == car.Id)
+        {
+            cars.Remove(item);
+            cars.Add(car);
+            return true;
+        }
+    }
+    return false;
 }
 bool Delete(int id)
 {
