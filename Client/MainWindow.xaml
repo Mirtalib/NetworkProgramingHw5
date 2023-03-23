@@ -104,8 +104,7 @@
             <Grid
                   Grid.Column="1">
                 <ScrollViewer 
-                    x:Name="MyScrollViewer" 
-                    Margin="20 0 0 20">
+                    x:Name="MyScrollViewer">
                     <WrapPanel Name="CarListWrapPanel"></WrapPanel>
                 </ScrollViewer>
             </Grid>

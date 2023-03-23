@@ -5,18 +5,108 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Client.User_Controls"
              mc:Ignorable="d" 
-             d:DesignHeight="200" d:DesignWidth="300">
-    <Grid Background="White">
-        <!--<Grid.RowDefinitions>
-            <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
-        </Grid.RowDefinitions>-->
+             d:DesignHeight="200" d:DesignWidth="350" BorderBrush="White">
 
-        <Button FontSize="50" >Salam</Button>
+    <Grid Background="#FF000B4A" >
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <TextBlock 
+            Foreground="#FF8DFF00"
+            Text="Id:"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Left"></TextBlock>
+
+        <TextBlock 
+            x:Name="txtBlockId"
+            Foreground="#FF8DFF00"
+            Text="CarId"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Right"></TextBlock>
+
+
+        <TextBlock 
+            Grid.Row="1"
+            Foreground="#FF8DFF00"
+            Text="Make:"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Left"></TextBlock>
+
+        <TextBlock 
+            Grid.Row="1"
+            x:Name="txtBlockMake"
+            Foreground="#FF8DFF00"
+            Text="CarMake"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Right"></TextBlock>
+
+        <TextBlock 
+            Grid.Row="2"
+            Foreground="#FF8DFF00"
+            Text="Model:"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Left"></TextBlock>
+
+        <TextBlock 
+            Grid.Row="2"
+            x:Name="txtBlockModel"
+            Foreground="#FF8DFF00"
+            Text="CarModel"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Right"></TextBlock>
+
+
+        <TextBlock 
+            Grid.Row="3"
+            Foreground="#FF8DFF00"
+            Text="Year:"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Left"></TextBlock>
+
+        <TextBlock 
+            Grid.Row="3"
+            x:Name="txtBlockYear"
+            Foreground="#FF8DFF00"
+            Text="CarYear"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Right"></TextBlock>
+
+        <TextBlock 
+            Grid.Row="4"
+            Foreground="#FF8DFF00"
+            Text="VIN:"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Left"></TextBlock>
+
+        <TextBlock 
+            Grid.Row="4"
+            x:Name="txtBlockVIN"
+            Foreground="#FF8DFF00"
+            Text="CarVIN"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Right"></TextBlock>
         
+        
+        <TextBlock 
+            Grid.Row="5"
+            Foreground="#FF8DFF00"
+            Text="Color:"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Left"></TextBlock>
+
+        <TextBlock 
+            Grid.Row="5"
+            x:Name="txtBlockColor"
+            Foreground="#FF8DFF00"
+            Text="CarColor"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Right"></TextBlock>
+
+
     </Grid>
 </UserControl>

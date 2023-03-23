@@ -32,24 +32,21 @@ namespace Client
         public MainWindow()
         {
             InitializeComponent();
-
-            //var ipString = IPAddress.Parse("127.0.0.1");
-            //var port = 12;
-            //IPEndPoint ep = new(ipString, port);
-            client = new TcpClient("127.0.0.1" ,12);
+            client = new TcpClient("127.0.0.1" ,2702);
             
             var enumType = Enum.GetNames(typeof(HttpMethods));
 
             foreach (var item in enumType)
                 cmboxCommandName.Items.Add(item);
 
-            for (int i = 0; i < 100; i++)
-            {
-                UC_CarInfo carInfo = new();
-                CarListWrapPanel.Children.Add(carInfo);
-            }
-
-
+            //for (int i = 0; i < 100; i++)
+            //{
+            //    UC_CarInfo carInfo = new();
+            //    carInfo.Height = 200;
+            //    carInfo.Width = 250;
+            //    carInfo.Margin = new Thickness(10 , 10 ,10 ,10);
+            //    CarListWrapPanel.Children.Add(carInfo);
+            //}
         }
         private void cmboxCommandName_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -63,6 +60,7 @@ namespace Client
             }
             else if (cmboxCommandName.SelectedIndex == 1)
             {
+                txtboxId.Visibility = Visibility.Visible;
                 txtboxMake.Visibility = Visibility.Visible;
                 txtboxModel.Visibility = Visibility.Visible;
                 txtboxVinCod.Visibility = Visibility.Visible;
@@ -89,8 +87,6 @@ namespace Client
 
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
-
-
             if (txtboxMake.Text == null || txtboxModel.Text == null || txtboxVinCod.Text == null 
                 || txtboxYear.Text == null || txtboxColor.Text == null)
             {
@@ -110,35 +106,42 @@ namespace Client
             {
                 try
                 {
-                    car = new()
-                    {
-                        Id = Convert.ToInt32(txtboxId.Text),
-                        Make = txtboxMake.Text,
-                        Model = txtboxModel.Text,
-                        Color = txtboxColor.Text,
-                        VIN = txtboxVinCod.Text,
-                        Year = Convert.ToInt32(txtboxYear.Text),
-                    };
+                    car = new();
+                    car.Id = Convert.ToInt32(txtboxId.Text);
 
-                    Command commandWrite = new()
+                    Command? commandWrite = new()
                     {
                         Car = car,
                         Method = (HttpMethods)cmboxCommandName.SelectedIndex
                     };
+
                     var jsonStr = System.Text.Json.JsonSerializer.Serialize(commandWrite);
                     binaryWrite.Write(jsonStr);
                     await Task.Delay(100);
                     var response = binaryRead.ReadString();
-                    var commandRead = System.Text.Json.JsonSerializer.Deserialize<Command>(response);
+                    var commandRead = System.Text.Json.JsonSerializer.Deserialize<Car>(response);
 
+                    if (commandRead is null)
+                        return;
+    
+
+                    UC_CarInfo carInfo = new();
+                    carInfo.Height = 200;
+                    carInfo.Width = 250;
+                    carInfo.Margin = new Thickness(10, 10, 10, 10);
+                    carInfo.txtBlockId.Text = commandRead.Id.ToString();
+                    carInfo.txtBlockMake.Text = commandRead?.Make?.ToString();
+                    carInfo.txtBlockModel.Text = commandRead?.Model?.ToString();
+                    carInfo.txtBlockVIN.Text = commandRead?.VIN?.ToString();
+                    carInfo.txtBlockYear.Text = commandRead.Year.ToString();
+                    carInfo.txtBlockColor.Text = commandRead?.Color?.ToString();
+                    CarListWrapPanel.Children.Add(carInfo);
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show(ex.Message);
                     return;
                 }
-                
-
             }
             else if (cmboxCommandName.SelectedIndex == 1)
             {

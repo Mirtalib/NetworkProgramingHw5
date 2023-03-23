@@ -9,7 +9,7 @@ List<Car> cars = new List<Car>();
 
 var ip = IPAddress.Parse("127.0.0.1");
 
-var port = 12;
+var port = 2702;
 
 var listener = new TcpListener(ip, port);
 
@@ -24,8 +24,6 @@ while (true)
     var client = listener.AcceptTcpClient();
     Console.WriteLine("connect");
     
-    Task.Run(() =>
-    {
 
         var clientStream = client.GetStream();
         var binaryWrite = new BinaryWriter(clientStream);
@@ -69,7 +67,7 @@ while (true)
             }
 
         }
-    }).Start();
+
 }
 
 
