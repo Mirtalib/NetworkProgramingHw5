@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:Client"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
+    
     <Grid Background="#FF000731">
         <Grid.RowDefinitions>
             <RowDefinition></RowDefinition>
@@ -16,8 +17,8 @@
 
         <ComboBox Name="cmboxCommandName" 
                   Width="200"
-                  Height="30" SelectionChanged="cmboxCommandName_SelectionChanged"
-                    />
+                  Height="30" 
+                  SelectionChanged="cmboxCommandName_SelectionChanged"/>
 
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>

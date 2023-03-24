@@ -29,6 +29,7 @@ while (true)
         var binaryWrite = new BinaryWriter(clientStream);
         var binaryRead = new BinaryReader(clientStream);
 
+
         while (true)
         {
             var strRead = binaryRead.ReadString();
@@ -80,7 +81,7 @@ Car? GetById(int id)
             return car;
         }
     }
-    return new Car();
+    return null;
 }
 
 List<Car>? GetAll()
