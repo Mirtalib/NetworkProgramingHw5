@@ -38,15 +38,6 @@ namespace Client
 
             foreach (var item in enumType)
                 cmboxCommandName.Items.Add(item);
-
-            //for (int i = 0; i < 100; i++)
-            //{
-            //    UC_CarInfo carInfo = new();
-            //    carInfo.Height = 200;
-            //    carInfo.Width = 250;
-            //    carInfo.Margin = new Thickness(10 , 10 ,10 ,10);
-            //    CarListWrapPanel.Children.Add(carInfo);
-            //}
         }
         private void cmboxCommandName_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -212,7 +203,30 @@ namespace Client
                 }
                 else if (cmboxCommandName.SelectedIndex == 3)
                 {
+                    car = new();
+                    car.Id = Convert.ToInt32(txtboxId.Text);
 
+
+                    Command? commandWrite = new()
+                    {
+                        Car = car,
+                        Method = (HttpMethods)cmboxCommandName.SelectedIndex
+                    };
+
+                    var jsonStr = System.Text.Json.JsonSerializer.Serialize(commandWrite);
+                    binaryWrite.Write(jsonStr);
+                    await Task.Delay(100);
+                    var response = binaryRead.ReadBoolean();
+                    if (response)
+                    {
+                        MessageBox.Show("The Car Has Been Delete", "", MessageBoxButton.OK, MessageBoxImage.Information);
+                        return;
+                    }
+                    else
+                    {
+                        MessageBox.Show("The Vehicle Could Not Be Delete", "", MessageBoxButton.OK, MessageBoxImage.Information);
+                        return;
+                    }
                 }
             }
             catch (Exception ex)
